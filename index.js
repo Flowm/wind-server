@@ -10,6 +10,7 @@ const app = express();
 const grib2json = process.env.GRIB2JSON || "./converter/bin/grib2json";
 const port = process.env.PORT || 7000;
 const resolution = process.env.RESOLUTION || "0.5";
+const data = process.env.DATA || "lev_10_m_above_ground";
 const baseDir = `https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_${resolution === "1" ? "1p00" : "0p50"}.pl`;
 const wind = process.env.WIND || true;
 const temp = process.env.TEMP || false;
@@ -26,31 +27,16 @@ const GFS_CYCLE_MAX_D = process.env.MAX_HISTORY_DAYS || 2;
 // Number of forecast hours to download for each model cycle
 const GFS_FORECAST_MAX_H = process.env.MAX_FORECAST_HOURS || 18;
 
-
-// cors config
-const whitelist = [
-  "http://localhost:8080",
-  "http://localhost:3000",
-  "http://localhost:4000",
-];
-
-const corsOptions = {
-  origin(origin, callback) {
-    const originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-    callback(null, originIsWhitelisted);
-  },
-};
-
 app.use(compression());
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Running wind server for data resolution of ${resolution === "1" ? "1" : "0.5"} degree on port ${port}`);
 });
 
-app.get("/", cors(corsOptions), (req, res) => {
+app.get("/", cors(), (req, res) => {
   res.send("Wind server : go to /latest for last wind data.");
 });
 
-app.get("/alive", cors(corsOptions), (req, res) => {
+app.get("/alive", cors(), (req, res) => {
   res.send("Wind server is alive");
 });
 
@@ -91,7 +77,7 @@ function findNearest(targetMoment, limitHours = GFS_FORECAST_MAX_H, searchBackwa
   return false;
 }
 
-app.get("/latest", cors(corsOptions), (req, res, next) => {
+app.get("/latest", cors(), (req, res, next) => {
   const targetMoment = moment().utc();
   const filename = findNearest(targetMoment);
   if (!filename) {
@@ -106,7 +92,7 @@ app.get("/latest", cors(corsOptions), (req, res, next) => {
   });
 });
 
-app.get("/nearest", cors(corsOptions), (req, res, next) => {
+app.get("/nearest", cors(), (req, res, next) => {
   const { time } = req.query;
   const limit = req.query.limit || GFS_FORECAST_MAX_H;
 
@@ -177,7 +163,7 @@ function getGribData(targetMoment, offset) {
       var_TMP: "on",
     },
     ...wind && {
-      lev_10_m_above_ground: "on",
+      [data]: "on",
       var_UGRD: "on",
       var_VGRD: "on",
     },

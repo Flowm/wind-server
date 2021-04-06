@@ -31,12 +31,13 @@ $ npm start
 
 The following environment variables can be used to customize behaviour:
 
-| Variable   | Description                             | Default | Options     |
-|------------|-----------------------------------------|---------|-------------|
-| PORT       | The port the server will listen on      | 7000    | Port number |
-| RESOLUTION | Requested GFS data resolution           | 0.5     | 0.5, 1      |
-| WIND       | Enable the download of wind data        | true    | true, false |
-| TEMP       | Enable the download of temperature data | false   | true, false |
+| Variable   | Description                             | Default               | Options     |
+|------------|-----------------------------------------|-----------------------|-------------|
+| PORT       | The port the server will listen on      | 7000                  | Port number |
+| RESOLUTION | Requested GFS data resolution           | 0.5                   | 0.5, 1      |
+| WIND       | Enable the download of wind data        | true                  | true, false |
+| TEMP       | Enable the download of temperature data | false                 | true, false |
+| DATA       | Set Wind Data Type                      | lev_10_m_above_ground | data type   |
 
 ## Endpoints
 
