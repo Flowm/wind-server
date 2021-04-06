@@ -10,6 +10,7 @@ const app = express();
 const grib2json = process.env.GRIB2JSON || "./converter/bin/grib2json";
 const port = process.env.PORT || 7000;
 const resolution = process.env.RESOLUTION || "0.5";
+const data = process.env.DATA || "lev_10_m_above_ground";
 const baseDir = `https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_${resolution === "1" ? "1p00" : "0p50"}.pl`;
 const wind = process.env.WIND || true;
 const temp = process.env.TEMP || false;
@@ -162,7 +163,7 @@ function getGribData(targetMoment, offset) {
       var_TMP: "on",
     },
     ...wind && {
-      lev_70_mb: "on",
+      [data]: "on",
       var_UGRD: "on",
       var_VGRD: "on",
     },
