@@ -43,7 +43,7 @@ const corsOptions = {
 };
 
 app.use(compression());
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Running wind server for data resolution of ${resolution === "1" ? "1" : "0.5"} degree on port ${port}`);
 });
 
