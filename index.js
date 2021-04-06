@@ -178,7 +178,7 @@ function getGribData(targetMoment, offset) {
       var_TMP: "on",
     },
     ...wind && {
-      lev_10_m_above_ground: "on",
+      lev_20_mb: "on",
       var_UGRD: "on",
       var_VGRD: "on",
     },
